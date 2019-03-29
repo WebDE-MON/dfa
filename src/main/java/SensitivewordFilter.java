@@ -1,4 +1,5 @@
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,6 +34,42 @@ public class SensitivewordFilter {
             }
         }
         return flag;
+    }
+
+    /**
+     * 替换敏感字字符
+     * @param txt
+     * @param matchType
+     * @param replaceChar 替换字符，默认*
+     */
+    public String replaceSensitiveWord(String txt,int matchType,String replaceChar){
+        String resultTxt = txt;
+        Set<String> set = getSensitiveWord(txt, matchType);     //获取所有的敏感词
+        Iterator<String> iterator = set.iterator();
+        String word = null;
+        String replaceString = null;
+        while (iterator.hasNext()) {
+            word = iterator.next();
+            replaceString = getReplaceChars(replaceChar, word.length());
+            resultTxt = resultTxt.replaceAll(word, replaceString);
+        }
+
+        return resultTxt;
+    }
+
+    /**
+     * 获取替换字符串
+     * @param replaceChar
+     * @param length
+     * @return
+     */
+    private String getReplaceChars(String replaceChar,int length){
+        String resultReplace = replaceChar;
+        for(int i = 1 ; i < length ; i++){
+            resultReplace += replaceChar;
+        }
+
+        return resultReplace;
     }
 
     /**
